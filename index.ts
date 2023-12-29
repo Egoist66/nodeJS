@@ -4,35 +4,38 @@ const fs = require("fs");
 const path = require('path')
 
 
-http.createServer(function (req, res) {
+let counter = 0
+http.createServer(function (req:  any, res: any) {
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+
     if (req.url.match(/favicon.ico/)) {
         return
     }
 
-    res.setHeader("Content-Type", "text/html; charset=utf-8;");
+        switch (req.url) {
+            case "/home":
+            case "/":
+                counter++
+                res.write(`<h2>Home - ${counter}</h2>`);
+                res.write('<title>😊</title>');
 
-    if (req.method === 'GET') {
-        if (req.url === "/home" || req.url === "/") {
-            res.write("<h2>Home</h2>");
+                break;
+            case "/about":
+                res.statusCode = 302;
+                res.setHeader("Location", "/newpage");
+                break;
+            case "/contact":
+                res.write("<h2>Contacts</h2>");
+                break;
+            case '/newpage':
+                res.write(req.url);
+                break;
+            default:
+                res.statusCode = 404
+                res.write("<h2>Not found</h2>");
+                break;
         }
-        else if (req.url == "/about") {
-            res.statusCode = 302; // временная переадресация
-            // на адрес localhost:3000/newpage
-            res.setHeader("Location", "/newpage");
-            //res.write("<h2>About</h2>");
-        }
-        else if (req.url == "/contact") {
-            res.write("<h2>Contacts</h2>");
-        }
-        else if(req.url === '/newpage'){
-            res.write(req.url);
 
-        }
-        else {
-            res.statusCode = 404
-            res.write("<h2>Not found</h2>");
-        }
-    }
     res.end();
 
 }).listen(3001, 'localhost', () => {
