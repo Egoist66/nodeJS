@@ -1,10 +1,11 @@
 {
-  "name": "nodeJS",
+  "name": "node-js",
   "version": "1.0.0",
+  "module": "es6",
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "start": "nodemon index.ts"
+    "start": "nodemon server_2.ts"
   },
   "keywords": [],
   "author": "",
